@@ -16,9 +16,11 @@ interface SnakeProps {
   setScore: (arg: (prevState: number) => number) => void,
   setTriggerUpdate: (arg: (prevState: boolean) => boolean) => void,
   stopGame: () => void
+  speed: number,
+  increasesSpeed: (arg: number) => void,
 }
 
-function Snake({ isStarted, foodInfo, setScore, setTriggerUpdate, stopGame }: SnakeProps) {
+function Snake({ isStarted, foodInfo, setScore, setTriggerUpdate, stopGame, speed, increasesSpeed }: SnakeProps) {
   const [snake, setSnake] = useState<SnakeItem[]>([{ x: 13, y: 13 }])
   const [direction, setDirection] = useState<Direction>(Direction.Right)
 
@@ -47,7 +49,21 @@ function Snake({ isStarted, foodInfo, setScore, setTriggerUpdate, stopGame }: Sn
     }
 
     if (foodInfo.x === newSnake[0].x && foodInfo.y === newSnake[0].y) {
-      setScore(pervState => pervState + 1)
+      switch (foodInfo.weight) {
+        case 1:
+          setScore(pervState => pervState + 1);
+          increasesSpeed(1);
+          break;
+        case 5:
+          setScore(pervState => pervState + 5);
+          increasesSpeed(5);
+          break;
+        case 50:
+          setScore(pervState => pervState + 50);
+          increasesSpeed(50);
+          break;
+      }
+
       setTriggerUpdate(prevState => !prevState)
     } else {
       newSnake.pop();
@@ -85,14 +101,13 @@ function Snake({ isStarted, foodInfo, setScore, setTriggerUpdate, stopGame }: Sn
     let interval = setInterval(() => {
       move();
       checkCollision();
-    }, 300)
+    }, speed)
 
     return () => clearInterval(interval)
   }, [snake])
 
   const checkCollision = () => {
     const head = snake[0];
-    console.log("head: ", head)
     if (head.x < 1 || head.x > GRID_SIZE || head.y < 1 || head.y > GRID_SIZE) {
       stopGame()
     }

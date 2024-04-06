@@ -21,7 +21,7 @@ function Food({ foodInfo, setFoodInfo, triggerUpdate }: FoodProps) {
         weight = 1;
         break;
       case 2:
-        weight = 10;
+        weight = 5;
         break;
       case 3:
         weight = 50;
