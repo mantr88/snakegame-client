@@ -4,12 +4,17 @@ import Food from '../Food/Food';
 import Snake from '../Snake/Snake';
 import { useEffect, useState } from 'react';
 
+export interface FoodInfo {
+  x: number, y: number, weight: number
+}
 
 
 
 
 function App() {
   const [isStarted, setIsStarted] = useState(false)
+  const [foodInfo, setFoodInfo] = useState<FoodInfo>({ x: 1, y: 1, weight: 1 })
+
 
   const keyDownHandler = (e: KeyboardEvent) => {
     console.log(e.key, e.code)
@@ -35,7 +40,7 @@ function App() {
       <div className="border">
         {isStarted && <div className="game-board">
           <Snake isStarted={isStarted} />
-          <Food />
+          <Food foodInfo={foodInfo} setFoodInfo={setFoodInfo} />
         </div>}
         {!isStarted && <div className='wrapper'>
           <img src="./snake.jpg" alt="green snake" className="logo" width="480" />

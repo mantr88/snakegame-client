@@ -71,13 +71,13 @@ function Snake({ isStarted }: SnakeProps) {
   }, [])
 
   //TEst
-  // useEffect(() => {
-  //   let int = setInterval(() => {
-  //     move();
-  //   }, 200)
+  useEffect(() => {
+    let int = setInterval(() => {
+      move();
+    }, 200)
 
-  //   return () => clearInterval(int)
-  // }, [snake])
+    return () => clearInterval(int)
+  }, [snake])
 
   return (
     <>{draw(snake)}</>
