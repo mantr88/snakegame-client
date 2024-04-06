@@ -1,3 +1,4 @@
+import { FoodInfo, GRID_SIZE } from '../App/App';
 import '../App/App.css'
 import { useEffect, useState } from 'react'
 enum Direction {
@@ -11,9 +12,13 @@ type SnakeItem = { x: number; y: number }
 
 interface SnakeProps {
   isStarted: boolean,
+  foodInfo: FoodInfo,
+  setScore: (arg: (prevState: number) => number) => void,
+  setTriggerUpdate: (arg: (prevState: boolean) => boolean) => void,
+  stopGame: () => void
 }
 
-function Snake({ isStarted }: SnakeProps) {
+function Snake({ isStarted, foodInfo, setScore, setTriggerUpdate, stopGame }: SnakeProps) {
   const [snake, setSnake] = useState<SnakeItem[]>([{ x: 13, y: 13 }])
   const [direction, setDirection] = useState<Direction>(Direction.Right)
 
@@ -41,12 +46,17 @@ function Snake({ isStarted }: SnakeProps) {
         break;
     }
 
-    newSnake.pop();
+    if (foodInfo.x === newSnake[0].x && foodInfo.y === newSnake[0].y) {
+      setScore(pervState => pervState + 1)
+      setTriggerUpdate(prevState => !prevState)
+    } else {
+      newSnake.pop();
+    }
     setSnake(newSnake);
   }
 
   const keyDownHandler = (e: KeyboardEvent) => {
-    console.log(e.key, e.code)
+    // console.log(e.key, e.code)
 
     switch (e.key) {
       case 'ArrowUp':
@@ -72,12 +82,28 @@ function Snake({ isStarted }: SnakeProps) {
 
   //TEst
   useEffect(() => {
-    let int = setInterval(() => {
+    let interval = setInterval(() => {
       move();
-    }, 200)
+      checkCollision();
+    }, 300)
 
-    return () => clearInterval(int)
+    return () => clearInterval(interval)
   }, [snake])
+
+  const checkCollision = () => {
+    const head = snake[0];
+    console.log("head: ", head)
+    if (head.x < 1 || head.x > GRID_SIZE || head.y < 1 || head.y > GRID_SIZE) {
+      stopGame()
+    }
+
+    for (let i = 1; i < snake.length; i += 1) {
+      const element = snake[i];
+      if (head.x === element.x && head.y === element.y) {
+        stopGame()
+      }
+    }
+  }
 
   return (
     <>{draw(snake)}</>
