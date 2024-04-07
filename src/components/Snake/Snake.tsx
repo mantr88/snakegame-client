@@ -20,7 +20,9 @@ interface SnakeProps {
   isPaused: boolean
 }
 
-function Snake({ foodInfo, setScore, setTriggerUpdate, stopGame, speed, increasesSpeed, isPaused }: SnakeProps) {
+function Snake({ foodInfo, setScore, setTriggerUpdate,
+  stopGame, speed, increasesSpeed, isPaused }: SnakeProps) {
+
   const [snake, setSnake] = useState<SnakeItem[]>([{ x: 13, y: 13 }])
   const [direction, setDirection] = useState<Direction>(Direction.Right)
 

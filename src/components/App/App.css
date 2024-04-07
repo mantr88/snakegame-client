@@ -58,12 +58,14 @@ main {
 .players-list {
   margin-top: 12px;
   font-size: 24px;
+  list-style: decimal;
 }
 
 .scores {
   display: flex;
   justify-content: space-around;
   font-size: 24px;
+  list-style: none;
 }
 
 /* .score {}
@@ -87,7 +89,7 @@ main {
 
 .instructions {
   position: absolute;
-  top: 75%;
+  top: 79%;
 
   width: 500px;
   text-align: center;
@@ -133,4 +135,29 @@ main {
 .food-3-type {
   background-color: rgb(255, 34, 0);
   border: 1px solid black;
+}
+
+form {
+  position: absolute;
+  top: 7%;
+}
+
+form>input {
+  color: rgb(27, 194, 68);
+  ;
+  border: 2px solid rgb(27, 194, 68);
+  ;
+  border-radius: 10px;
+  padding: 10px 25px;
+  background: rgb(34, 31, 32);
+  max-width: 190px;
+}
+
+form>input:active {
+  box-shadow: 2px 2px 15px rgb(27, 194, 68) inset;
+}
+
+form>input::placeholder {
+  color: rgb(27, 194, 68);
+  text-align: center;
 }

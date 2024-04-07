@@ -52,19 +52,18 @@ function App() {
         setLoading(true)
         const response = await fetch('https://snakegame-server-ks0y.onrender.com/players');
         const players = await response.json();
-        setPlayers(players)
+        setPlayers(players.players)
         setLoading(false)
       } catch (error) {
         console.log(error)
       }
-      console.log("players: ", players)
     }
     fetchPlayers();
   }, [])
 
   const sendPlayer = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('Form submitted');
+    // console.log('Form submitted');
     setIsStarted(true);
     try {
       const form = e.currentTarget as HTMLFormElement;
@@ -93,10 +92,9 @@ function App() {
 
   const keyDownHandler = (e: KeyboardEvent) => {
     // console.log(e.key, e.code)
-    if (!isStarted && e.key === 'Enter') {
-      // startGame()
-      setIsStarted(true);
-      // console.log(e.key, e.code)
+
+    if (e.code === "Space" || e.key === "") {
+      setIsPaused(prevState => !prevState)
     }
   }
 
@@ -123,19 +121,22 @@ function App() {
   }
 
   const stopGame = () => {
-    fetch(`https://snakegame-server-ks0y.onrender.com/players/${currentPlayer?.id}`, {
-      method: "PATCH",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ score })
-    })
+    fetch(
+      `https://snakegame-server-ks0y.onrender.com/players/${currentPlayer?.id}`,
+      // `https://snakegame-server-ks0y.onrender.com/players/1`,
+      {
+        method: "PATCH",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ score })
+      })
     setIsStarted(false);
     setScore(0)
     setSpeed(DEFAULT_SPEED)
     setCountScore(0);
   }
-
+  const sortedPlayers = players.sort((a, b) => b.score - a.score)
   const correctedScore = score.toString().padStart(3, '0');
 
   return (
@@ -146,14 +147,14 @@ function App() {
             {isPaused ? 'Resume' : 'Pause'}
           </button>
           <h3 className='players-title'>Best players</h3>
-          <ul className='players-list'>
-            {!loading && <><li><span>Player-1: </span>000</li>
+          <ol className='players-list'>
+            {loading && <><li><span>Player-1: </span>000</li>
               <li><span>Player-2: </span>000</li>
               <li><span>Player-3: </span>000</li></>}
-            {loading && players.map(player => {
-              return <li key={player.id}><span>{player.name}: </span>{player.score.toString().padStart(3, '0')}</li>
+            {!loading && sortedPlayers.map(player => {
+              return <li key={player.id}><span>{player.name}: </span>{player.score}</li>
             })}
-          </ul>
+          </ol>
         </aside>}
       <div>
         {isStarted && <ul className='scores'>
@@ -179,8 +180,8 @@ function App() {
             <img src="./snake.jpg" alt="green snake" className="logo" width="480" />
             <div className="instructions">Please enter your name and press Enter/Return key to start the game</div>
             <form onSubmit={sendPlayer}>
-              <input type="text" name='player' placeholder="Enter text your name" />
-              <button type='submit' style={{ display: 'none' }}>Start</button>
+              <input type="text" name='player' placeholder="Enter your name" />
+              <button type='submit' style={{ display: "none" }}>Send</button>
             </form  >
           </div>}
         </div>
