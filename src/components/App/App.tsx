@@ -73,7 +73,6 @@ function App() {
       <div className="border">
         {isStarted && <div className="game-board">
           <Snake
-            isStarted={isStarted}
             foodInfo={foodInfo}
             setScore={setScore}
             setTriggerUpdate={setTriggerUpdate}

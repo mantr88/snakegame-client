@@ -11,7 +11,6 @@ enum Direction {
 type SnakeItem = { x: number; y: number }
 
 interface SnakeProps {
-  isStarted: boolean,
   foodInfo: FoodInfo,
   setScore: (arg: (prevState: number) => number) => void,
   setTriggerUpdate: (arg: (prevState: boolean) => boolean) => void,
@@ -20,7 +19,7 @@ interface SnakeProps {
   increasesSpeed: (arg: number) => void,
 }
 
-function Snake({ isStarted, foodInfo, setScore, setTriggerUpdate, stopGame, speed, increasesSpeed }: SnakeProps) {
+function Snake({ foodInfo, setScore, setTriggerUpdate, stopGame, speed, increasesSpeed }: SnakeProps) {
   const [snake, setSnake] = useState<SnakeItem[]>([{ x: 13, y: 13 }])
   const [direction, setDirection] = useState<Direction>(Direction.Right)
 
@@ -98,7 +97,7 @@ function Snake({ isStarted, foodInfo, setScore, setTriggerUpdate, stopGame, spee
 
   //TEst
   useEffect(() => {
-    let interval = setInterval(() => {
+    const interval = setInterval(() => {
       move();
       checkCollision();
     }, speed)
