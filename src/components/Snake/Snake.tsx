@@ -17,9 +17,10 @@ interface SnakeProps {
   stopGame: () => void
   speed: number,
   increasesSpeed: (arg: number) => void,
+  isPaused: boolean
 }
 
-function Snake({ foodInfo, setScore, setTriggerUpdate, stopGame, speed, increasesSpeed }: SnakeProps) {
+function Snake({ foodInfo, setScore, setTriggerUpdate, stopGame, speed, increasesSpeed, isPaused }: SnakeProps) {
   const [snake, setSnake] = useState<SnakeItem[]>([{ x: 13, y: 13 }])
   const [direction, setDirection] = useState<Direction>(Direction.Right)
 
@@ -95,15 +96,22 @@ function Snake({ foodInfo, setScore, setTriggerUpdate, stopGame, speed, increase
     return () => removeEventListener('keydown', keyDownHandler);
   }, [])
 
-  //TEst
+  // //TEst
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     move();
+  //     checkCollision();
+  //   }, speed)
   useEffect(() => {
     const interval = setInterval(() => {
-      move();
-      checkCollision();
-    }, speed)
+      if (!isPaused) { // Check if the game is not paused
+        move();
+        checkCollision();
+      }
+    }, speed);
 
-    return () => clearInterval(interval)
-  }, [snake])
+    return () => clearInterval(interval);
+  }, [snake, isPaused, speed]); // Add isPaused to the dependency array
 
   const checkCollision = () => {
     const head = snake[0];

@@ -5,14 +5,14 @@ import { FoodInfo } from '../App/App';
 interface FoodProps {
   foodInfo: FoodInfo,
   setFoodInfo: (args: FoodInfo) => void,
-  triggerUpdate: boolean
+  triggerUpdate: boolean,
 }
 
 const randomNumbOfFoodType = () => Math.floor((Math.random() * 3) + 1);
 const randomCoordinateOfFood = () => Math.floor((Math.random() * 26) + 1);
 
 function Food({ foodInfo, setFoodInfo, triggerUpdate }: FoodProps) {
-  const [typeOfFood] = useState(randomNumbOfFoodType())
+  const [typeOfFood, setTypeOfFood] = useState(randomNumbOfFoodType())
 
   const changeWeight = (number: number) => {
     let weight = 1;
@@ -31,6 +31,8 @@ function Food({ foodInfo, setFoodInfo, triggerUpdate }: FoodProps) {
   }
 
   useEffect(() => {
+    const newTypeOfFood = randomNumbOfFoodType();
+    setTypeOfFood(newTypeOfFood);
     const newWeight = changeWeight(typeOfFood);
     const xFood = randomCoordinateOfFood();
     const yFood = randomCoordinateOfFood();
