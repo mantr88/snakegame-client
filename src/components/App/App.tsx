@@ -3,18 +3,7 @@ import './App.css'
 import Food from '../Food/Food';
 import Snake from '../Snake/Snake';
 import { FormEvent, useEffect, useState } from 'react';
-
-export interface FoodInfo {
-  x: number, y: number, weight: number
-}
-
-export interface Player {
-  id: number,
-  name: string,
-  score: number,
-  createdAt?: Date,
-  updatedAt?: Date
-}
+import { FoodInfo, Player } from '../../types';
 
 export const GRID_SIZE = 26;
 const DEFAULT_DELAY = 250;
@@ -137,6 +126,7 @@ function App() {
     setCountScore(0);
     setSpeed(1);
   }
+
   const sortedPlayers = players.sort((a, b) => b.score - a.score);
   const bestScorePlayers = sortedPlayers[0].score;
   const correctedScore = score.toString().padStart(3, '0');
@@ -162,7 +152,7 @@ function App() {
         {isStarted && <ul className='scores'>
           <li className='score'><span>Score </span>{correctedScore}</li>
           <li className='score'><span>Speed </span>{speed}</li>
-          <li className='highScore'><span>High Score </span> {loading ? bestScorePlayers : '000'}</li>
+          <li className='highScore'><span>High Score </span> {!loading ? bestScorePlayers : '000'}</li>
         </ul>}
         <div className="border">
           {isStarted && <div className="game-board">
@@ -174,7 +164,6 @@ function App() {
               delay={delay}
               increasesSpeed={increasesSpeed}
               isPaused={isPaused}
-              isStarted={isStarted}
             />
             <Food foodInfo={foodInfo} setFoodInfo={setFoodInfo} triggerUpdate={triggerUpdate} />
 

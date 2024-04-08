@@ -1,4 +1,6 @@
-import { FoodInfo, GRID_SIZE } from '../App/App';
+
+import { SnakeItem, SnakeProps } from '../../types';
+import { GRID_SIZE } from '../App/App';
 import '../App/App.css'
 import { useEffect, useState } from 'react'
 
@@ -9,21 +11,8 @@ enum Direction {
   Right = 'right',
 }
 
-type SnakeItem = { x: number; y: number }
-
-interface SnakeProps {
-  foodInfo: FoodInfo,
-  setScore: (arg: (prevState: number) => number) => void,
-  setTriggerUpdate: (arg: (prevState: boolean) => boolean) => void,
-  stopGame: () => void
-  delay: number,
-  increasesSpeed: (arg: number) => void,
-  isPaused: boolean,
-  isStarted: boolean
-}
-
 function Snake({ foodInfo, setScore, setTriggerUpdate,
-  stopGame, delay, increasesSpeed, isPaused, isStarted }: SnakeProps) {
+  stopGame, delay, increasesSpeed, isPaused }: SnakeProps) {
 
   const [snake, setSnake] = useState<SnakeItem[]>([{ x: 13, y: 13 }])
   const [direction, setDirection] = useState<Direction>(Direction.Right)

@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react';
 import '../App/App.css'
-import { FoodInfo } from '../App/App';
+import { FoodProps } from '../../types';
 
-interface FoodProps {
-  foodInfo: FoodInfo,
-  setFoodInfo: (args: FoodInfo) => void,
-  triggerUpdate: boolean,
-}
+
 
 const randomNumbOfFoodType = () => Math.floor((Math.random() * 3) + 1);
 const randomCoordinateOfFood = () => Math.floor((Math.random() * 26) + 1);
 
 function Food({ foodInfo, setFoodInfo, triggerUpdate }: FoodProps) {
+
   const [typeOfFood, setTypeOfFood] = useState(randomNumbOfFoodType())
 
   const changeWeight = (number: number) => {
