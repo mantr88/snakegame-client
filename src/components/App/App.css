@@ -11,6 +11,7 @@ main {
   padding: 0 24px 24px 24px;
   margin-top: 36px;
   background-color: rgb(161, 103, 190);
+  border-radius: 10px;
 }
 
 .pause-btn {
@@ -22,6 +23,7 @@ main {
   align-items: center;
   background: 0 0;
   border: 1px solid #000;
+  border-radius: 10px;
   cursor: pointer;
   display: inline-flex;
   flex-shrink: 0;

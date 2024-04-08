@@ -1,30 +1,9 @@
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+<div style="text-align:center"><h1>Snake game</h1></div>
+<img src="./public/Знімок екрана 2024-04-08 о 09.26.17.png" alt="game screen" width="420" height="420"/>
+<img src="./public/Знімок екрана 2024-04-08 о 09.31.53.png" alt="game screen" width="420" height="420"/>
+<p style="font-size:24px">This is a popular game 'Snake' which I realized using Javascript, TypeScript, Node.js, React, PostgreSQL. 
+After entering the player's name and pressing the key Enter the game begins. Press the key Space or press the special button the player can pause the game. During the game player can get 3 types of food and get different quantities of points for it, the player's points are calculated, speed of the game increases every 50 points. The player's points are recorded in the DB after the end of the game. In the right side of the screen you can see a list of leaders.
+Game have 
+</p>
+<p style="font-size:24px">The game have frontend and backend part. Frontend deployed on <a href="https://mantr88.github.io/snakegame-client/">gh-pages</a>  and <a href="https://github.com/mantr88/snakegame-server">backend</a> deployed on render.com.</p>
+</div>
