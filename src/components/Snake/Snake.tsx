@@ -1,6 +1,7 @@
 import { FoodInfo, GRID_SIZE } from '../App/App';
 import '../App/App.css'
 import { useEffect, useState } from 'react'
+
 enum Direction {
   Up = 'up',
   Down = 'down',
@@ -15,13 +16,14 @@ interface SnakeProps {
   setScore: (arg: (prevState: number) => number) => void,
   setTriggerUpdate: (arg: (prevState: boolean) => boolean) => void,
   stopGame: () => void
-  speed: number,
+  delay: number,
   increasesSpeed: (arg: number) => void,
-  isPaused: boolean
+  isPaused: boolean,
+  isStarted: boolean
 }
 
 function Snake({ foodInfo, setScore, setTriggerUpdate,
-  stopGame, speed, increasesSpeed, isPaused }: SnakeProps) {
+  stopGame, delay, increasesSpeed, isPaused, isStarted }: SnakeProps) {
 
   const [snake, setSnake] = useState<SnakeItem[]>([{ x: 13, y: 13 }])
   const [direction, setDirection] = useState<Direction>(Direction.Right)
@@ -74,8 +76,6 @@ function Snake({ foodInfo, setScore, setTriggerUpdate,
   }
 
   const keyDownHandler = (e: KeyboardEvent) => {
-    // console.log(e.key, e.code)
-
     switch (e.key) {
       case 'ArrowUp':
         setDirection(Direction.Up);
@@ -98,22 +98,18 @@ function Snake({ foodInfo, setScore, setTriggerUpdate,
     return () => removeEventListener('keydown', keyDownHandler);
   }, [])
 
-  // //TEst
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     move();
-  //     checkCollision();
-  //   }, speed)
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isPaused) { // Check if the game is not paused
+      if (!isPaused) {
         move();
         checkCollision();
       }
-    }, speed);
+    }, delay);
+
 
     return () => clearInterval(interval);
-  }, [snake, isPaused, speed]); // Add isPaused to the dependency array
+
+  }, [snake, isPaused, delay]);
 
   const checkCollision = () => {
     const head = snake[0];

@@ -17,7 +17,7 @@ export interface Player {
 }
 
 export const GRID_SIZE = 26;
-const DEFAULT_SPEED = 250;
+const DEFAULT_DELAY = 250;
 
 const initialPlayers: Player[] = [{
   id: 1,
@@ -39,11 +39,12 @@ function App() {
   const [foodInfo, setFoodInfo] = useState<FoodInfo>({ x: 1, y: 1, weight: 1 });
   const [score, setScore] = useState<number>(0);
   const [triggerUpdate, setTriggerUpdate] = useState(false);
-  const [speed, setSpeed] = useState(DEFAULT_SPEED);
-  const [countScore, setCountScore] = useState(0);
+  const [delay, setDelay] = useState(DEFAULT_DELAY);
+  const [countScore, setCountScore] = useState(1);
   const [players, setPlayers] = useState(initialPlayers);
   const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null);
   const [loading, setLoading] = useState(false);
+  const [speed, setSpeed] = useState(1)
 
   useEffect(() => {
 
@@ -63,7 +64,6 @@ function App() {
 
   const sendPlayer = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // console.log('Form submitted');
     setIsStarted(true);
     try {
       const form = e.currentTarget as HTMLFormElement;
@@ -72,7 +72,6 @@ function App() {
 
       const response = await fetch(
         'https://snakegame-server-ks0y.onrender.com/players',
-        // 'http://localhost:3022/players',
         {
           method: "POST",
           headers: {
@@ -91,8 +90,6 @@ function App() {
 
 
   const keyDownHandler = (e: KeyboardEvent) => {
-    // console.log(e.key, e.code)
-
     if (e.code === "Space" || e.key === "") {
       setIsPaused(prevState => !prevState)
     }
@@ -105,38 +102,43 @@ function App() {
   }, []);
 
   const increasesSpeed = (number: number) => {
+    const newCountScore = countScore + number;
     setCountScore(prevState => prevState + number);
-    if (countScore % 50 === 0) {
-      if (speed > 150) {
-        setSpeed(prevState => prevState - 10);
-      } else if (speed > 100) {
-        setSpeed(prevState => prevState - 3);
-      } else if (speed > 50) {
-        setSpeed(prevState => prevState - 2);
-      } else if (speed > 25) {
-        setSpeed(prevState => prevState - 1);
+    if (newCountScore >= 50) {
+      if (delay > 150) {
+        setDelay(prevState => prevState - 10);
+      } else if (delay > 100) {
+        setDelay(prevState => prevState - 3);
+      } else if (delay > 50) {
+        setDelay(prevState => prevState - 2);
+      } else if (delay > 25) {
+        setDelay(prevState => prevState - 1);
       }
+      setSpeed(prevState => prevState + 1)
       setCountScore(0);
     }
   }
 
   const stopGame = () => {
-    fetch(
-      `https://snakegame-server-ks0y.onrender.com/players/${currentPlayer?.id}`,
-      // `https://snakegame-server-ks0y.onrender.com/players/1`,
-      {
-        method: "PATCH",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ score })
-      })
+    if (score !== 0) {
+      fetch(
+        `https://snakegame-server-ks0y.onrender.com/players/${currentPlayer?.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ score })
+        })
+    }
     setIsStarted(false);
     setScore(0)
-    setSpeed(DEFAULT_SPEED)
+    setDelay(DEFAULT_DELAY)
     setCountScore(0);
+    setSpeed(1);
   }
-  const sortedPlayers = players.sort((a, b) => b.score - a.score)
+  const sortedPlayers = players.sort((a, b) => b.score - a.score);
+  const bestScorePlayers = sortedPlayers[0].score;
   const correctedScore = score.toString().padStart(3, '0');
 
   return (
@@ -160,7 +162,7 @@ function App() {
         {isStarted && <ul className='scores'>
           <li className='score'><span>Score </span>{correctedScore}</li>
           <li className='score'><span>Speed </span>{speed}</li>
-          <li className='highScore'><span>High Score </span>000</li>
+          <li className='highScore'><span>High Score </span> {loading ? bestScorePlayers : '000'}</li>
         </ul>}
         <div className="border">
           {isStarted && <div className="game-board">
@@ -169,9 +171,10 @@ function App() {
               setScore={setScore}
               setTriggerUpdate={setTriggerUpdate}
               stopGame={stopGame}
-              speed={speed}
+              delay={delay}
               increasesSpeed={increasesSpeed}
               isPaused={isPaused}
+              isStarted={isStarted}
             />
             <Food foodInfo={foodInfo} setFoodInfo={setFoodInfo} triggerUpdate={triggerUpdate} />
 

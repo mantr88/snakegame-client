@@ -33,7 +33,7 @@ function Food({ foodInfo, setFoodInfo, triggerUpdate }: FoodProps) {
   useEffect(() => {
     const newTypeOfFood = randomNumbOfFoodType();
     setTypeOfFood(newTypeOfFood);
-    const newWeight = changeWeight(typeOfFood);
+    const newWeight = changeWeight(newTypeOfFood);
     const xFood = randomCoordinateOfFood();
     const yFood = randomCoordinateOfFood();
     setFoodInfo({ x: xFood, y: yFood, weight: newWeight });
